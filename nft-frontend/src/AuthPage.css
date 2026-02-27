@@ -1,0 +1,91 @@
+body {
+  background: radial-gradient(circle at center, #0f0f0f, #000);
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  overflow: hidden;
+}
+
+.auth-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 100px;
+}
+
+.auth-box {
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #0ff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #0ff;
+  width: 300px;
+  text-align: center;
+}
+
+.auth-box h2 {
+  color: #0ff;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px #0ff;
+}
+
+.auth-box input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  background: #111;
+  border: none;
+  border-radius: 5px;
+  color: #0ff;
+  box-shadow: 0 0 10px #0ff;
+}
+
+.auth-box button {
+  width: 100%;
+  padding: 10px;
+  background: #0ff;
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px #0ff;
+}
+/* Fade-in + Slide-up */
+@keyframes fadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-box {
+  animation: fadeSlide 1s ease forwards;
+}
+
+/* Button Hover Glow */
+.auth-box button:hover {
+  box-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+/* Background Pulse */
+@keyframes pulseBg {
+  0% {
+    background: radial-gradient(circle at center, #80c920, hsl(205, 52%, 56%));
+  }
+  50% {
+    background: radial-gradient(circle at center, #861d94, #b71515);
+  }
+  100% {
+    background: radial-gradient(circle at center, #0f0f0f, #000);
+  }
+}
+
+body {
+  animation: pulseBg 6s infinite ease-in-out;
+}

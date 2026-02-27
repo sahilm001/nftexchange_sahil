@@ -1,0 +1,126 @@
+.leaderboard-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.leaderboard-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.leaderboard-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.leaderboard-stats {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.leaderboard-table th {
+    padding: 1.5rem 1rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.leaderboard-table td {
+    padding: 1.5rem 1rem;
+    color: var(--text-primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+}
+
+.leaderboard-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.rank-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.top-three .rank-badge {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.address-pill {
+    font-family: monospace;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.type-badge {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.type-badge.whale {
+    background: rgba(139, 92, 246, 0.2);
+    color: #c4b5fd;
+}
+
+.type-badge.collector {
+    background: rgba(16, 185, 129, 0.2);
+    color: #6ee7b7;
+}
+
+.type-badge.rising-star {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fcd34d;
+}
+
+.type-badge.creator {
+    background: rgba(236, 72, 153, 0.2);
+    color: #f9a8d4;
+}
+
+.type-badge.newcomer {
+    background: rgba(99, 102, 241, 0.2);
+    color: #a5b4fc;
+}
+
+.volume-cell {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent-primary);
+}
+
+@media (max-width: 768px) {
+    .leaderboard-stats {
+        flex-direction: column;
+    }
+
+    .leaderboard-container {
+        padding: 1rem;
+    }
+}

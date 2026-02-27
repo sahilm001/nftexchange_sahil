@@ -1,0 +1,564 @@
+.dashboard-header {
+    margin-bottom: 2rem;
+}
+
+.header-titles {
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-header h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+/* Analytics Header */
+.analytics-header {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.analytics-card {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.analytics-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(139, 92, 246, 0.1);
+    color: var(--accent-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.analytics-info {
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+
+.analytics-info .label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.analytics-info .value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.mini-chart {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1rem;
+    height: 40px;
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    opacity: 0.5;
+}
+
+.mini-chart .bar {
+    width: 6px;
+    background: var(--accent-secondary);
+    border-radius: 2px 2px 0 0;
+    animation: pulseBar 2s infinite ease-in-out alternate;
+}
+
+.mini-chart .bar:nth-child(even) {
+    animation-delay: 0.5s;
+    background: var(--accent-primary);
+}
+
+@keyframes pulseBar {
+    from {
+        transform: scaleY(0.8);
+    }
+
+    to {
+        transform: scaleY(1.2);
+    }
+}
+
+/* Controls Row */
+.controls-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filters-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.price-inputs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+}
+
+.price-input-small {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    color: var(--text-primary);
+    width: 80px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.price-input-small::-webkit-outer-spin-button,
+.price-input-small::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.search-bar {
+    flex: 1;
+    min-width: 250px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+}
+
+.search-bar input {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.search-bar input:focus {
+    outline: none;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+}
+
+.filter-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 1.25rem;
+}
+
+.filter-dropdown select {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.filter-dropdown select:focus {
+    outline: none;
+}
+
+.filter-dropdown select option {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.nft-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.nft-card {
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nft-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.nft-image-container {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+
+.nft-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.nft-card:hover .nft-image {
+    transform: scale(1.05);
+}
+
+.nft-info {
+    padding: 1.5rem;
+}
+
+.nft-info h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.nft-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+}
+
+.price-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.price-value {
+    color: var(--accent-primary);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 2rem;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 900px;
+    background: var(--bg-secondary);
+    overflow: hidden;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.modal-split {
+    display: flex;
+    flex-direction: row;
+}
+
+.modal-image {
+    flex: 1;
+    min-height: 400px;
+}
+
+.modal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-details {
+    flex: 1;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-details h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.description {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.label {
+    color: var(--text-secondary);
+}
+
+.truncate {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.price-box {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.price-amount {
+    font-size: 2rem;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.eth-icon {
+    color: var(--accent-primary);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
+}
+
+.buy-btn {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-actions .btn-secondary {
+    flex: 1;
+}
+
+.scrollable-modal {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-left-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.social-share {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    text-align: center;
+}
+
+.social-share h4 {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.share-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.mock-history h4,
+.comments-section h4 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.history-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.history-header,
+.history-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+.history-header {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.history-row {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.comment-item {
+    padding: 1rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.comment-date {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-left: 0.5rem;
+}
+
+.comment-item p {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.no-comments {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.comment-input-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.comment-input-row input {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    color: var(--text-primary);
+    outline: none;
+}
+
+.comment-input-row input:focus {
+    border-color: var(--accent-primary);
+}
+
+.small-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .dashboard-header h1 {
+        font-size: 2rem;
+    }
+
+    .analytics-header {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .analytics-card {
+        padding: 1rem;
+    }
+
+    .analytics-info .value {
+        font-size: 1.25rem;
+    }
+
+    .modal-split {
+        flex-direction: column;
+    }
+
+    .modal-image {
+        min-height: 250px;
+    }
+
+    .modal-details {
+        padding: 1.5rem;
+    }
+
+    .modal-details h2 {
+        font-size: 1.5rem;
+    }
+
+    .price-amount {
+        font-size: 1.5rem;
+    }
+
+    .controls-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .search-bar,
+    .filter-dropdown {
+        padding: 0.5rem 1rem;
+    }
+
+    .nft-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- THEMATIC CSS FILTERS FOR SCIFI NFT SIMULATION --- */
+.nft-image.cyberpunk,
+.cyberpunk {
+    filter: hue-rotate(280deg) saturate(3) contrast(1.2) brightness(0.9);
+}
+
+.nft-image.futuristic,
+.futuristic {
+    filter: hue-rotate(180deg) saturate(2) brightness(1.2) contrast(1.1);
+}
+
+.nft-image.abstract-3d,
+.abstract-3d {
+    filter: hue-rotate(90deg) saturate(4) contrast(1.5);
+}
+
+.nft-image.fantasy,
+.fantasy {
+    filter: sepia(0.5) hue-rotate(320deg) saturate(2) contrast(1.2);
+}
