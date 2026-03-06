@@ -3,7 +3,25 @@ import { calculateLoyalty } from '../services/LoyaltyService';
 import { Edit3, Check, X, Upload, Star, Award, Zap } from 'lucide-react';
 import './Profile.css';
 
-const Profile = ({ nfts, userAddress, userProfile, updateUserProfile, showToast }) => {
+const timeAgo = (dateStr) => {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    const seconds = Math.floor((new Date() - date) / 1000);
+    let interval = seconds / 31536000;
+    if (interval >= 1) return Math.floor(interval) + " years ago";
+    interval = seconds / 2592000;
+    if (interval >= 1) return Math.floor(interval) + " months ago";
+    interval = seconds / 86400;
+    if (interval >= 1) return Math.floor(interval) + (Math.floor(interval) === 1 ? " day ago" : " days ago");
+    interval = seconds / 3600;
+    if (interval >= 1) return Math.floor(interval) + (Math.floor(interval) === 1 ? " hour ago" : " hours ago");
+    interval = seconds / 60;
+    if (interval >= 1) return Math.floor(interval) + (Math.floor(interval) === 1 ? " minute ago" : " minutes ago");
+    if (seconds < 30) return "Just now";
+    return Math.floor(seconds) + " seconds ago";
+};
+
+const Profile = ({ nfts, userAddress, userProfile, updateUserProfile, showToast, transactions }) => {
     const ownedNfts = nfts.filter(nft => nft.owner === userAddress);
     const createdNfts = nfts.filter(nft => nft.seller === userAddress);
     const loyalty = calculateLoyalty(ownedNfts.length);
@@ -332,24 +350,19 @@ const Profile = ({ nfts, userAddress, userProfile, updateUserProfile, showToast 
                             <span>Price</span>
                             <span>Date</span>
                         </div>
-                        <div className="history-row">
-                            <span>List</span>
-                            <span>Digital Samurai</span>
-                            <span>1.0 ETH</span>
-                            <span>5 hours ago</span>
-                        </div>
-                        <div className="history-row">
-                            <span>Buy</span>
-                            <span>Neon Dreams #042</span>
-                            <span>1.2 ETH</span>
-                            <span>1 day ago</span>
-                        </div>
-                        <div className="history-row">
-                            <span>Mint</span>
-                            <span>Cosmic Voyager #001</span>
-                            <span>--</span>
-                            <span>2 days ago</span>
-                        </div>
+                        {transactions && transactions.filter(t => t.from === userAddress || t.to === userAddress).map(tx => (
+                            <div key={tx.id} className="history-row">
+                                <span>{tx.type}</span>
+                                <span>{tx.nftName}</span>
+                                <span>{tx.type === 'Mint/List' ? '--' : `${tx.price} ETH`}</span>
+                                <span>{timeAgo(tx.timestamp)}</span>
+                            </div>
+                        ))}
+                        {(!transactions || transactions.filter(t => t.from === userAddress || t.to === userAddress).length === 0) && (
+                            <div className="history-row" style={{ gridTemplateColumns: '1fr', textAlign: 'center', opacity: 0.5 }}>
+                                <span>No recent activity</span>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

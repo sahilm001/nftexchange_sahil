@@ -3,7 +3,25 @@ import { ShoppingCart, Search, Filter, TrendingUp, Award, Box, Share2, MessageCi
 import { calculateLoyalty } from '../services/LoyaltyService';
 import './Dashboard.css';
 
-const Dashboard = ({ nfts, buyNft, userAddress, userProfile }) => {
+const timeAgo = (dateStr) => {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    const seconds = Math.floor((new Date() - date) / 1000);
+    let interval = seconds / 31536000;
+    if (interval >= 1) return Math.floor(interval) + " years ago";
+    interval = seconds / 2592000;
+    if (interval >= 1) return Math.floor(interval) + " months ago";
+    interval = seconds / 86400;
+    if (interval >= 1) return Math.floor(interval) + (Math.floor(interval) === 1 ? " day ago" : " days ago");
+    interval = seconds / 3600;
+    if (interval >= 1) return Math.floor(interval) + (Math.floor(interval) === 1 ? " hour ago" : " hours ago");
+    interval = seconds / 60;
+    if (interval >= 1) return Math.floor(interval) + (Math.floor(interval) === 1 ? " minute ago" : " minutes ago");
+    if (seconds < 30) return "Just now";
+    return Math.floor(seconds) + " seconds ago";
+};
+
+const Dashboard = ({ nfts, buyNft, userAddress, userProfile, transactions }) => {
     const [selectedNft, setSelectedNft] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('All');
@@ -261,16 +279,18 @@ const Dashboard = ({ nfts, buyNft, userAddress, userProfile }) => {
                                             <span>Price</span>
                                             <span>Date</span>
                                         </div>
-                                        <div className="history-row">
-                                            <span>List</span>
-                                            <span>{selectedNft.price} ETH</span>
-                                            <span>Just now</span>
-                                        </div>
-                                        <div className="history-row">
-                                            <span>Mint</span>
-                                            <span>--</span>
-                                            <span>2 days ago</span>
-                                        </div>
+                                        {transactions && transactions.filter(t => t.nftId === selectedNft.id).map(tx => (
+                                            <div key={tx.id} className="history-row">
+                                                <span>{tx.type}</span>
+                                                <span>{tx.type === 'Mint/List' ? '--' : `${tx.price} ETH`}</span>
+                                                <span>{timeAgo(tx.timestamp)}</span>
+                                            </div>
+                                        ))}
+                                        {(!transactions || transactions.filter(t => t.nftId === selectedNft.id).length === 0) && (
+                                            <div className="history-row" style={{ gridTemplateColumns: '1fr', textAlign: 'center', opacity: 0.5 }}>
+                                                <span>No history found</span>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 

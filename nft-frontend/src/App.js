@@ -22,17 +22,30 @@ function App() {
   const [currentView, setCurrentView] = useState('dashboard');
   const [walletConnected, setWalletConnected] = useState(false);
   const [userAddress, setUserAddress] = useState('');
-  const [nfts, setNfts] = useState(DUMMY_NFTS);
+  const [nfts, setNfts] = useState(() => {
+    const saved = localStorage.getItem('nft_data');
+    return saved ? JSON.parse(saved) : DUMMY_NFTS;
+  });
   const [userProfile, setUserProfile] = useState(() => {
+    const today = new Date().toDateString();
+    let profile = { ...USER_PROFILE, fullName: '', email: '', phone: '', dob: '', avatarUrl: '', balance: '100.00', lastResetDate: today };
     const saved = localStorage.getItem('nft_user_profile');
     if (saved) {
       try {
-        return { ...USER_PROFILE, ...JSON.parse(saved) };
+        const parsed = JSON.parse(saved);
+        profile = { ...profile, ...parsed };
+        if (!parsed.lastResetDate) {
+          profile.lastResetDate = 'needs_reset';
+        }
       } catch (e) {
         console.error('Failed to parse profile data', e);
       }
     }
-    return { ...USER_PROFILE, fullName: '', email: '', phone: '', dob: '', avatarUrl: '' };
+    return profile;
+  });
+  const [transactions, setTransactions] = useState(() => {
+    const saved = localStorage.getItem('nft_transactions');
+    return saved ? JSON.parse(saved) : [];
   });
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
   const [theme, setTheme] = useState(() => localStorage.getItem('nft_theme') || 'dark');
@@ -47,13 +60,44 @@ function App() {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
+  // Daily reset check
+  useEffect(() => {
+    const today = new Date().toDateString();
+    if (userProfile && userProfile.lastResetDate !== today) {
+      const updatedProfile = {
+        ...userProfile,
+        balance: '100.00',
+        lastResetDate: today
+      };
+      setUserProfile(updatedProfile);
+      localStorage.setItem('nft_user_profile', JSON.stringify(updatedProfile));
+      showToast('Daily reset: Your balance has been restored to 100 ETH!', 'success');
+    }
+  }, [userProfile]);
+
+  const addTransaction = (type, nft, price, from, to) => {
+    const newTx = {
+      id: Date.now().toString() + Math.random().toString(36).substring(7),
+      type,
+      nftId: nft.id,
+      nftName: nft.name,
+      price,
+      from,
+      to,
+      timestamp: new Date().toISOString()
+    };
+    const updatedTx = [newTx, ...transactions];
+    setTransactions(updatedTx);
+    localStorage.setItem('nft_transactions', JSON.stringify(updatedTx));
+  };
+
   // Initialize Auth session from Supabase
   useEffect(() => {
     // Check if we are in a password recovery flow before initializing the regular session
     const hash = window.location.hash;
     // Also check standard query parameters in case the router changed it
     const searchParams = new URLSearchParams(window.location.search);
-    if (hash && hash.includes('type=recovery') || searchParams.get('type') === 'recovery') {
+    if (hash & hash.includes('type=recovery') || searchParams.get('type') === 'recovery') {
       setCurrentView('reset-password');
     }
 
@@ -169,10 +213,13 @@ function App() {
     });
 
     setNfts(updatedNfts);
+    localStorage.setItem('nft_data', JSON.stringify(updatedNfts));
     setUserProfile({
       ...userProfile,
       balance: (balanceNum - priceNum).toFixed(2)
     });
+
+    addTransaction('Buy', nft, nft.price, nft.owner, userAddress);
 
     showToast(`Successfully purchased ${nft.name}!`, 'success');
 
@@ -192,7 +239,10 @@ function App() {
     }
     const previouslyMinted = nfts.filter(n => n.seller === userAddress).length;
 
-    setNfts([...nfts, newNft]);
+    const updatedNfts = [...nfts, newNft];
+    setNfts(updatedNfts);
+    localStorage.setItem('nft_data', JSON.stringify(updatedNfts));
+    addTransaction('Mint/List', newNft, newNft.price, userAddress, null);
     showToast('NFT successfully minted and listed!', 'success');
 
     if (previouslyMinted === 0) {
@@ -240,8 +290,8 @@ function App() {
       />
 
       <main className="main-content">
-        {currentView === 'dashboard' && <Dashboard nfts={nfts} buyNft={buyNft} userAddress={userAddress} showToast={showToast} userProfile={userProfile} />}
-        {currentView === 'profile' && <Profile nfts={nfts} userAddress={userAddress} userProfile={userProfile} updateUserProfile={updateUserProfile} showToast={showToast} />}
+        {currentView === 'dashboard' && <Dashboard nfts={nfts} buyNft={buyNft} userAddress={userAddress} showToast={showToast} userProfile={userProfile} transactions={transactions} />}
+        {currentView === 'profile' && <Profile nfts={nfts} userAddress={userAddress} userProfile={userProfile} updateUserProfile={updateUserProfile} showToast={showToast} transactions={transactions} />}
         {currentView === 'sell' && <Sell nfts={nfts} addNft={addNft} userAddress={userAddress} showToast={showToast} />}
         {currentView === 'about' && <About />}
         {currentView === 'contact' && <Contact showToast={showToast} />}
