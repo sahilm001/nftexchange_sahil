@@ -3,17 +3,32 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    margin-bottom: 2rem;
     position: sticky;
-    top: 1rem;
+    top: 0;
     z-index: 100;
+    margin-bottom: 2rem;
+    background: rgba(10, 10, 15, 0.6);
+    /* More transparent for frosted glass effect */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.gradient-logo {
+.nav-brand span {
     font-size: 1.5rem;
     font-weight: 700;
     cursor: pointer;
     letter-spacing: -0.5px;
+}
+
+.gradient-logo {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), #3b82f6, var(--accent-primary));
+    background-size: 300% 300%;
+    animation: gradientFlow 5s ease infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
 }
 
 .nav-links {

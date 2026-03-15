@@ -99,46 +99,23 @@ const Dashboard = ({ nfts, buyNft, userAddress, userProfile, transactions }) => 
 
     return (
         <div className="dashboard animate-fade-in">
-            {/* Analytics Header */}
-            <div className="analytics-header">
-                <div className="analytics-card glass-panel">
-                    <div className="analytics-icon"><Box size={24} /></div>
-                    <div className="analytics-info">
-                        <span className="label">Total Listed</span>
-                        <span className="value">{nfts.filter(n => n.isListed).length} NFTs</span>
+            <div className="hero-banner glass-panel mb-4">
+                <div className="hero-content">
+                    <h1 className="hero-title"><span className="gradient-text gradient-logo">NFT Galaxy</span></h1>
+                    <p className="hero-subtitle">Discover, Collect, and Sell Extraordinary Digital Art</p>
+                    <p className="hero-description">Join the world's most premium NFT exchange college project today. Create your own collections, buy legendary art, and show off your loyalty tier.</p>
+                    <div className="hero-actions">
+                        <button className="btn-primary" onClick={() => document.querySelector('.search-bar input').focus()}>Explore Market</button>
                     </div>
                 </div>
-
-                <div className="analytics-card glass-panel">
-                    <div className="analytics-icon"><TrendingUp size={24} /></div>
-                    <div className="analytics-info">
-                        <span className="label">Platform Volume</span>
-                        <span className="value">{totalVolume} ETH</span>
-                    </div>
-                    {/* Pure CSS Animated Bar Chart mock */}
-                    <div className="mini-chart">
-                        <div className="bar" style={{ height: '40%' }}></div>
-                        <div className="bar" style={{ height: '70%' }}></div>
-                        <div className="bar" style={{ height: '50%' }}></div>
-                        <div className="bar" style={{ height: '90%' }}></div>
-                        <div className="bar" style={{ height: '60%' }}></div>
-                    </div>
-                </div>
-
-                <div className="analytics-card glass-panel">
-                    <div className="analytics-icon"><Award size={24} /></div>
-                    <div className="analytics-info">
-                        <span className="label">Your Points</span>
-                        <span className="value">{points} PTS</span>
-                    </div>
+                <div className="hero-visual">
+                    <div className="floating-cube"></div>
+                    <div className="floating-sphere"></div>
                 </div>
             </div>
 
-            <div className="dashboard-header mt-4">
-                <div className="header-titles">
-                    <h1 className="gradient-text">Top Collections</h1>
-                    <p className="subtitle">Discover, collect, and sell extraordinary NFTs</p>
-                </div>
+            {/* Analytics Header */}
+            <div className="analytics-header">
 
                 <div className="controls-row">
                     <div className="search-bar glass-panel">
@@ -199,11 +176,11 @@ const Dashboard = ({ nfts, buyNft, userAddress, userProfile, transactions }) => 
                 </div>
             </div>
 
-            <div className="nft-grid">
-                {displayNfts.map(nft => (
-                    <div key={nft.id} className="nft-card glass-panel" onClick={() => setSelectedNft(nft)}>
+            <div className="nft-grid has-staggered-animations">
+                {displayNfts.map((nft, index) => (
+                    <div key={nft.id} className="nft-card glass-panel staggered-item" style={{ animationDelay: `${index * 0.1}s` }} onClick={() => setSelectedNft(nft)}>
                         <div className="nft-image-container">
-                            <img src={nft.image} alt={nft.name} className={`nft-image ${nft.themeClass || ''}`} />
+                            <img src={nft.image} alt={nft.name} className={`nft-image ${nft.themeClass || ''}`} loading="lazy" />
                         </div>
                         <div className="nft-info">
                             <h3>{nft.name}</h3>
