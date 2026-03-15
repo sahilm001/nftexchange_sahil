@@ -12,6 +12,7 @@ const Sell = ({ nfts, addNft, userAddress, showToast }) => {
     });
     const [preview, setPreview] = useState(null);
     const [isMinting, setIsMinting] = useState(false);
+    const [mintSuccess, setMintSuccess] = useState(false);
 
     // Hardcoded dummy values for project requirement fulfillment
     const TIER = 'Premium Drop Phase 1';
@@ -55,10 +56,16 @@ const Sell = ({ nfts, addNft, userAddress, showToast }) => {
             };
 
             addNft(newNft);
-            setIsMinting(false);
-            setFormData({ name: '', description: '', price: '', image: '', rarity: 'Common' });
-            setPreview(null);
-        }, 2500); // 2.5 second simulated wait
+            setMintSuccess(true);
+
+            // Show success tick for 1.5 seconds before resetting form
+            setTimeout(() => {
+                setIsMinting(false);
+                setMintSuccess(false);
+                setFormData({ name: '', description: '', price: '', image: '', rarity: 'Common' });
+                setPreview(null);
+            }, 1500);
+        }, 2000); // 2 second simulated minting wait
     };
 
     const handleImageChange = (e) => {
@@ -108,8 +115,33 @@ const Sell = ({ nfts, addNft, userAddress, showToast }) => {
                     )}
                 </div>
 
-                <div className="form-section glass-panel">
-                    <form onSubmit={handleSubmit}>
+                <div className="form-section glass-panel relative-container">
+                    {/* Minting Overlay */}
+                    {(isMinting || mintSuccess) && (
+                        <div className="minting-overlay">
+                            {mintSuccess ? (
+                                <div className="success-content animate-pop-in">
+                                    <div className="success-circle">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </div>
+                                    <h2 className="gradient-text gradient-logo">Minted Successfully!</h2>
+                                </div>
+                            ) : (
+                                <div className="minting-content">
+                                    <div className="hologram-spinner">
+                                        <div className="inner-spin"></div>
+                                        <div className="outer-spin"></div>
+                                    </div>
+                                    <h2 className="pulse-text">Interacting with Blockchain...</h2>
+                                    <p>Deploying smart contract and uploading metadata to IPFS</p>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className={(isMinting || mintSuccess) ? 'blurred-form' : ''}>
                         <div className="form-group">
                             <label>NFT Name</label>
                             <input
