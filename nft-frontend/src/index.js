@@ -16,12 +16,11 @@ root.render(
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
 
+// Unregister service workers to prevent old assets from being cached
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js').then(registration => {
-      console.log('SW registered: ', registration);
-    }).catch(registrationError => {
-      console.log('SW registration failed: ', registrationError);
-    });
+  navigator.serviceWorker.ready.then(registration => {
+    registration.unregister();
+  }).catch(error => {
+    console.error(error.message);
   });
 }
