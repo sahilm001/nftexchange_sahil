@@ -78,12 +78,20 @@ const AuthPage = ({ onLogin, showToast }) => {
         });
     };
 
-    const handleSocialLogin = (provider) => {
+    const handleSocialLogin = async (provider) => {
         setLoadingProvider(provider);
-        setTimeout(() => {
+        try {
+            const { error } = await supabase.auth.signInWithOAuth({
+                provider: provider.toLowerCase(),
+                options: {
+                    redirectTo: window.location.origin
+                }
+            });
+            if (error) throw error;
+        } catch (error) {
+            showToast(error.message || `${provider} login failed`, 'error');
             setLoadingProvider(null);
-            showToast(`${provider} login is a conceptual demo feature.`, 'success');
-        }, 1000);
+        }
     };
 
     return (
@@ -182,11 +190,11 @@ const AuthPage = ({ onLogin, showToast }) => {
                     </div>
 
                     <div className="social-login">
-                        <button className="btn-social" onClick={() => handleSocialLogin('Google')} disabled={loadingProvider === 'Google'}>
+                        <button type="button" className="btn-social" onClick={() => handleSocialLogin('Google')} disabled={loadingProvider === 'Google'}>
                             {loadingProvider === 'Google' ? <Loader2 className="spin-animation" size={20} /> : <Chrome size={20} />}
                             <span>Continue with Google</span>
                         </button>
-                        <button className="btn-social" onClick={() => handleSocialLogin('GitHub')} disabled={loadingProvider === 'GitHub'}>
+                        <button type="button" className="btn-social" onClick={() => handleSocialLogin('GitHub')} disabled={loadingProvider === 'GitHub'}>
                             {loadingProvider === 'GitHub' ? <Loader2 className="spin-animation" size={20} /> : <Github size={20} />}
                             <span>Continue with GitHub</span>
                         </button>
