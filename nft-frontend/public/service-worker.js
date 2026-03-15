@@ -1,39 +1,28 @@
-const CACHE_NAME = 'nft-marketplace-v1';
-const urlsToCache = [
-    '/',
-    '/index.html',
-    '/manifest.json',
-    '/favicon.ico',
-];
-
 self.addEventListener('install', event => {
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => cache.addAll(urlsToCache))
-    );
+    // Force the waiting service worker to become the active service worker.
     self.skipWaiting();
 });
 
-self.addEventListener('fetch', event => {
-    event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                if (response) {
-                    return response;
-                }
-                return fetch(event.request).catch(() => {
-                    // Ignore offline errors for demo purposes
-                });
-            })
+self.addEventListener('activate', event => {
+    // Delete all caches immediately upon activation
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    console.log('Deleting outdated cache:', cacheName);
+                    return caches.delete(cacheName);
+                })
+            );
+        }).then(() => {
+            // Unregister the service worker entirely after destroying the cache
+            self.registration.unregister();
+            // Tell clients (open tabs) to reload in order to fetch fresh assets
+            return self.clients.claim();
+        })
     );
 });
 
-self.addEventListener('push', event => {
-    const title = 'NFT Galaxy Drop';
-    const options = {
-        body: event.data ? event.data.text() : 'A new NFT drop is live!',
-        icon: '/logo192.png',
-        badge: '/logo192.png'
-    };
-    event.waitUntil(self.registration.showNotification(title, options));
+self.addEventListener('fetch', event => {
+    // Bypass service worker and go straight to network
+    event.respondWith(fetch(event.request));
 });
