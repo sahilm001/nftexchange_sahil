@@ -53,14 +53,7 @@ function App() {
     }
     return profile;
   });
-  const [transactions, setTransactions] = useState(() => {
-    const saved = localStorage.getItem('nft_transactions');
-    try {
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
+  const [transactions, setTransactions] = useState([]);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
   const [theme, setTheme] = useState(() => localStorage.getItem('nft_theme') || 'dark');
 
@@ -89,7 +82,28 @@ function App() {
     }
   }, [userProfile]);
 
-  const addTransaction = (type, nft, price, from, to) => {
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      const { data, error } = await supabase.from('nft_transactions').select('*').order('timestamp', { ascending: false });
+      if (data) {
+        setTransactions(data.map(tx => ({
+          id: tx.id,
+          type: tx.type,
+          nftId: tx.nft_id,
+          nftName: tx.nft_name,
+          price: tx.price,
+          from: tx.from_address,
+          to: tx.to_address,
+          timestamp: tx.timestamp
+        })));
+      } else if (error) {
+        console.error("Could not fetch transactions:", error);
+      }
+    };
+    fetchTransactions();
+  }, []);
+
+  const addTransaction = async (type, nft, price, from, to) => {
     const newTx = {
       id: Date.now().toString() + Math.random().toString(36).substring(7),
       type,
@@ -100,9 +114,23 @@ function App() {
       to,
       timestamp: new Date().toISOString()
     };
-    const updatedTx = [newTx, ...transactions];
-    setTransactions(updatedTx);
-    localStorage.setItem('nft_transactions', JSON.stringify(updatedTx));
+    
+    // Quick UI update
+    setTransactions(prev => [newTx, ...prev]);
+
+    // Save to Supabase DB
+    const { error } = await supabase.from('nft_transactions').insert([{
+      type,
+      nft_id: nft.id,
+      nft_name: nft.name,
+      price: price.toString(),
+      from_address: from,
+      to_address: to
+    }]);
+
+    if (error) {
+      console.error("Failed to save transaction to database:", error.message);
+    }
   };
 
   // Initialize Auth session from Supabase
