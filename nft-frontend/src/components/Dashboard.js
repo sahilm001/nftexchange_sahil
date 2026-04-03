@@ -31,7 +31,11 @@ const Dashboard = ({ nfts, buyNft, userAddress, userProfile, transactions }) => 
     const [newComment, setNewComment] = useState('');
     const [nftComments, setNftComments] = useState(() => {
         const saved = localStorage.getItem('nft_comments');
-        return saved ? JSON.parse(saved) : {};
+        try {
+            return saved ? JSON.parse(saved) : {};
+        } catch {
+            return {};
+        }
     });
 
     // Calculate user's loyalty points
@@ -154,9 +158,15 @@ const Dashboard = ({ nfts, buyNft, userAddress, userProfile, transactions }) => 
                                 onChange={(e) => setCategoryFilter(e.target.value)}
                             >
                                 <option value="All">All Categories</option>
+                                <option value="Cyberpunk">Cyberpunk</option>
+                                <option value="Futuristic">Futuristic</option>
+                                <option value="Abstract 3D">Abstract 3D</option>
+                                <option value="Fantasy">Fantasy</option>
                                 <option value="Art">Art</option>
                                 <option value="Gaming">Gaming</option>
-                                <option value="PFP">PFP</option>
+                                <option value="PFPs">PFPs</option>
+                                <option value="Photography">Photography</option>
+                                <option value="Collectibles">Collectibles</option>
                             </select>
                         </div>
 

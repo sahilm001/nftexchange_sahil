@@ -141,7 +141,7 @@ const Navbar = ({ currentView, setCurrentView, walletConnected, connectWallet, u
                         </button>
                     ) : (
                         <button className="btn-primary" onClick={() => connectWallet(true)}>
-                            Connect MetaMask
+                            Connect Wallet
                         </button>
                     )}
 

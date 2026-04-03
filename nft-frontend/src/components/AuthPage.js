@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './AuthPage.css';
-import { Mail, Lock, ArrowRight, Github, Chrome, Twitter, Loader2, UserPlus } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Loader2, UserPlus } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 
 const AuthPage = ({ onLogin, showToast }) => {
@@ -9,7 +9,6 @@ const AuthPage = ({ onLogin, showToast }) => {
         password: ''
     });
     const [isLoading, setIsLoading] = useState(false);
-    const [loadingProvider, setLoadingProvider] = useState(null);
     const [isAdminLogin, setIsAdminLogin] = useState(false);
     const [isSignUp, setIsSignUp] = useState(false);
     const [isForgotPassword, setIsForgotPassword] = useState(false);
@@ -78,21 +77,7 @@ const AuthPage = ({ onLogin, showToast }) => {
         });
     };
 
-    const handleSocialLogin = async (provider) => {
-        setLoadingProvider(provider);
-        try {
-            const { error } = await supabase.auth.signInWithOAuth({
-                provider: provider.toLowerCase(),
-                options: {
-                    redirectTo: window.location.origin
-                }
-            });
-            if (error) throw error;
-        } catch (error) {
-            showToast(error.message || `${provider} login failed`, 'error');
-            setLoadingProvider(null);
-        }
-    };
+
 
     return (
         <div className="auth-container">
@@ -185,20 +170,7 @@ const AuthPage = ({ onLogin, showToast }) => {
                         </button>
                     </form>
 
-                    <div className="auth-divider">
-                        <span>Or continue with</span>
-                    </div>
 
-                    <div className="social-login">
-                        <button type="button" className="btn-social" onClick={() => handleSocialLogin('Google')} disabled={loadingProvider === 'Google'}>
-                            {loadingProvider === 'Google' ? <Loader2 className="spin-animation" size={20} /> : <Chrome size={20} />}
-                            <span>Continue with Google</span>
-                        </button>
-                        <button type="button" className="btn-social" onClick={() => handleSocialLogin('GitHub')} disabled={loadingProvider === 'GitHub'}>
-                            {loadingProvider === 'GitHub' ? <Loader2 className="spin-animation" size={20} /> : <Github size={20} />}
-                            <span>Continue with GitHub</span>
-                        </button>
-                    </div>
 
                     <div className="auth-footer">
                         {isForgotPassword ? (

@@ -1,6 +1,6 @@
 const generateNfts = () => {
   const nfts = [];
-  const themes = ['Cyberpunk', 'Futuristic', 'Abstract 3D', 'Fantasy'];
+  const themes = ['Cyberpunk', 'Futuristic', 'Abstract 3D', 'Fantasy', 'Art', 'Gaming', 'PFPs', 'Photography', 'Collectibles'];
   const adjectives = ['Cosmic', 'Neon', 'Ethereal', 'Quantum', 'Digital', 'Cyber', 'Astral', 'Galactic', 'Mystic', 'Void', 'Prismatic', 'Obsidian', 'Luminous'];
   const nouns = ['Voyager', 'Dreams', 'Forest', 'Core', 'Samurai', 'Punk', 'Ape', 'Dragon', 'Phoenix', 'Oracle', 'Entity', 'Ghost', 'Matrix'];
 

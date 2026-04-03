@@ -23,8 +23,18 @@ function App() {
   const [walletConnected, setWalletConnected] = useState(false);
   const [userAddress, setUserAddress] = useState('');
   const [nfts, setNfts] = useState(() => {
+    const version = localStorage.getItem('nft_data_version');
+    if (version !== '1.2') {
+      localStorage.removeItem('nft_data');
+      localStorage.setItem('nft_data_version', '1.2');
+    }
+    
     const saved = localStorage.getItem('nft_data');
-    return saved ? JSON.parse(saved) : DUMMY_NFTS;
+    try {
+      return saved ? JSON.parse(saved) : DUMMY_NFTS;
+    } catch {
+      return DUMMY_NFTS;
+    }
   });
   const [userProfile, setUserProfile] = useState(() => {
     const today = new Date().toDateString();
@@ -45,7 +55,11 @@ function App() {
   });
   const [transactions, setTransactions] = useState(() => {
     const saved = localStorage.getItem('nft_transactions');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
   });
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
   const [theme, setTheme] = useState(() => localStorage.getItem('nft_theme') || 'dark');
@@ -97,7 +111,7 @@ function App() {
     const hash = window.location.hash;
     // Also check standard query parameters in case the router changed it
     const searchParams = new URLSearchParams(window.location.search);
-    if (hash & hash.includes('type=recovery') || searchParams.get('type') === 'recovery') {
+    if ((hash && hash.includes('type=recovery')) || searchParams.get('type') === 'recovery') {
       setCurrentView('reset-password');
     }
 
@@ -169,23 +183,9 @@ function App() {
       return;
     }
 
-    if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        if (accounts.length > 0) {
-          setUserAddress(accounts[0]);
-          setUserProfile({ ...userProfile, address: accounts[0] });
-          setWalletConnected(true);
-          showToast('MetaMask connected successfully!', 'success');
-        }
-      } catch (error) {
-        showToast(error.message || 'Connection request failed', 'error');
-      }
-    } else {
-      setUserAddress(USER_PROFILE.address);
-      setWalletConnected(true);
-      showToast('MetaMask not found. Using dummy connection.', 'success');
-    }
+    setUserAddress(USER_PROFILE.address);
+    setWalletConnected(true);
+    showToast('Wallet connected successfully!', 'success');
   };
 
   const buyNft = (nft) => {
